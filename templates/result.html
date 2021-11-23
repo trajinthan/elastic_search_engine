@@ -1,0 +1,60 @@
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+<style>
+	h1 {text-align: center; color: rgb(45, 63, 122);font-family:courier}
+	h2 {text-align: center;}
+</style>
+<body>
+	<div>
+		<form action="http://127.0.0.1:5000/" method="post">
+			<h1><strong>Srilankan ODI Cricket Players Search Engine</strong></h1>
+			<input type="text" class="term" name="term" style="margin:10px auto; display:block;">
+			<input type="submit" value="Submit" style="margin:0px auto; display:block;">
+		</form>
+
+		{% if hits %}
+		<hgroup>
+			<h1>Search Results</h1>
+			<h2 class="lead" id="results"><strong>{{ num_results }}</strong> results were found for <strong>{{  query  }}</strong>
+			 in about <strong>{{  time  }}ms</strong></h2>
+		</hgroup>
+
+		<section class="col-md-8">
+			{% for hit in hits %}
+			<article class="search-result row">
+				<div class="col-md-12" style="padding-left: 100px">
+					<h3><a href="#" title="">{{ hit._source.வீரர்_பெயர் }}</a></h3>
+					<ul class="meta-search">
+						<li><i class="glyphicon glyphicon-tags"></i> <span>வயது: {{ hit._source.வயது}}</span></li>
+                        <li><i class="glyphicon glyphicon-tags"></i> <span>பாடசாலை: {{ hit._source.பாடசாலை  }} </span></li>
+						<li><i class="glyphicon glyphicon-tags"></i> <span>பங்கு: {{ hit._source.பங்கு }}</span></li>
+						<li><i class="glyphicon glyphicon-tags"></i> <span>போட்டிகள்: {{ hit._source.போட்டிகள் }} </span></li>
+						<li><i class="glyphicon glyphicon-tags"></i> <span>ஒட்டங்கள்: {{ hit._source.ஒட்டங்கள் }}</span></li>
+						<li><i class="glyphicon glyphicon-tags"></i> <span>அதிக ஒட்டங்கள்: {{ hit._source.அதிக_ஒட்டங்கள்  }} </span></li>
+						<li><i class="glyphicon glyphicon-tags"></i> <span>விக்கெட்டுகள்: {{ hit._source.விக்கெட்டுகள் }}</span></li>
+						<li><i class="glyphicon glyphicon-tags"></i> <span>சிறந்த பெறுதிகள்: {{ hit._source.சிறந்த_பெறுதிகள்}}</span></li>
+						<li><i class="glyphicon glyphicon-tags"></i> <span>அரை சதங்கள்: {{ hit._source.அரை_சதங்கள் }}</span></li>
+						<li><i class="glyphicon glyphicon-tags"></i> <span>சதங்கள்: {{ hit._source.சதங்கள் }}</span></li>
+					</ul>
+					<!-- <p style="white-space: pre-line">{{ hit._source.song_lyrics }}</p> -->
+				</div>
+				<span class="clearfix borda"></span>
+			</article>
+			{% endfor %}
+		</section>
+		
+
+		{% else %}
+			{% if init %}
+				<hgroup class="mb20">
+			</hgroup>
+			{% else %}
+			<hgroup class="mb20">
+				<h1>Search Results</h1>
+				<h2 class="lead"><strong class="text-danger">0</strong> results were found for <strong class="text-danger">{{  query  }}</strong></h2>
+			</hgroup>
+			{% endif %}
+		{% endif %}
+	</div>
+</body>

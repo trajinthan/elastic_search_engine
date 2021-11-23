@@ -3,7 +3,7 @@ from elasticsearch_dsl import Index
 import json, re
 
 client = Elasticsearch(HOST="http://localhost", PORT=9200)
-INDEX = 'name'
+INDEX = 'sl_odi_player'
 
 def createIndex():
     index = Index(INDEX, using=client)
@@ -37,27 +37,28 @@ def genData(all_players):
         hundreds = player.get("100s", None)
 
         yield {
-            "_index": "slcricketplayersdata",
+            "_index": "slodiplayersdata",
             "_source": {
-                "வீரர் பெயர்": name,
-                "பிறந்த வருடம்": birth_year,
-                "பிறந்த இடம்": birth_place,
+                "வீரர்_பெயர்": name,
+                "பிறந்த_வருடம்": int(birth_year),
+                "பிறந்த_இடம்": birth_place,
                 "வயது": age,
-                "பேட்டிங் பாணி": batting_style,
-                "பந்துவீச்சு பாணி": bowling_style,
+                "பேட்டிங்_பாணி": batting_style,
+                "பந்துவீச்சு_பாணி": bowling_style,
                 "பங்கு": role,
                 "பாடசாலை": education,
-                "போட்டிகள்": matches,
-                "இன்னிங்ஸ்": innings,
-                "விக்கெட்டுகள்": wickets,
-                "சிறந்த பெறுதிகள்": bbm,
-                "ஒட்டங்கள்": runs,
-                "அதிக ஒட்டங்கள்": highscore,
-                "அரை சதங்கள்": fifties,
-                "சதங்கள்": hundreds
+                "போட்டிகள்": int(matches),
+                "இன்னிங்ஸ்": int(innings),
+                "விக்கெட்டுகள்": int(wickets),
+                "சிறந்த_பெறுதிகள்": bbm,
+                "ஒட்டங்கள்": int(runs),
+                "அதிக_ஒட்டங்கள்": highscore,
+                "அரை_சதங்கள்": fifties,
+                "சதங்கள்": int(hundreds)
             },
         }
 
 createIndex()
 all_players = read_all_players()
+print(all_players)
 helpers.bulk(client,genData(all_players))
